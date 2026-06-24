@@ -24,4 +24,10 @@ public class Cliente extends Persona {
         super.mostrarInformacion();
         System.out.println("Teléfono: " + telefono);
     }
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
+    
 }

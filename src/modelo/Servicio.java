@@ -53,4 +53,10 @@ public class Servicio {
         System.out.println("Precio: " + precio);
         System.out.println("Stock: " + stock);
     }
+    
+        @Override
+        public String toString() {
+        return nombre;
+    
+}
 }
