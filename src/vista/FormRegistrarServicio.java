@@ -59,7 +59,7 @@ public class FormRegistrarServicio extends JFrame {
         panel.add(new JLabel(" Precio:"));
         panel.add(txtPrecio);
 
-        panel.add(new JLabel(" Stock:"));
+        panel.add(new JLabel(" numero de productos utilizados:"));
         panel.add(txtStock);
 
         panel.add(btnGuardar);

@@ -44,7 +44,7 @@ public class FormListarServicios extends JFrame {
         modelo.addColumn("Código");
         modelo.addColumn("Nombre");
         modelo.addColumn("Precio");
-        modelo.addColumn("Stock");
+        modelo.addColumn("productos usados");
 
         tabla = new JTable(modelo);
         add(new JScrollPane(tabla), BorderLayout.CENTER);
