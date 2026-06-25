@@ -19,6 +19,14 @@ import modelo.Cliente;
 import modelo.Deuda;
 import modelo.Servicio;
 
+//nuevos imports para corregir el error de conversion de la fecha
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
+
+
+
 public class FormRegistrarDeuda extends JFrame {
 
     private JComboBox<Object> cbCliente;
@@ -162,9 +170,12 @@ public class FormRegistrarDeuda extends JFrame {
 
             String descripcion =
                     txtDescripcion.getText().trim();
+            
+//posible error lo comente
+            //String fecha = LocalDate.now().toString();
+// solucion
 
-            String fecha =
-                    LocalDate.now().toString();
+            String fecha = java.time.LocalDateTime.now().toString();
 
             Deuda deuda =
                     new Deuda(

@@ -15,56 +15,105 @@ import modelo.Servicio;
 
 public class ControladorDeuda {
 
+    // comente registrar deudas debido a un posible error
+//    public void registrarDeuda(Deuda deuda) {
+//
+//        //solucion error timestamp
+//        String sql = "INSERT INTO ... (fecha_registro, ...) VALUES (?::timestamp, ...)";
+//
+//        Conexion conexion = new Conexion();
+//
+//        try (Connection conn = conexion.conectar();
+//             PreparedStatement pstmt =
+//                     conn.prepareStatement(
+//                             sql,
+//                             Statement.RETURN_GENERATED_KEYS)) {
+//
+//            pstmt.setInt(1,
+//                    deuda.getCliente().getId());
+//
+//            if (deuda.getServicio() != null) {
+//                pstmt.setInt(
+//                        2,
+//                        deuda.getServicio().getCodigo()
+//                );
+//            } else {
+//                pstmt.setNull(2, Types.INTEGER);
+//            }
+//
+//            pstmt.setDouble(3, deuda.getMonto());
+//            pstmt.setString(4,
+//                    deuda.getDescripcion());
+//            pstmt.setString(5,
+//                    deuda.getFechaRegistro());
+//            pstmt.setString(6,
+//                    deuda.getEstado());
+//
+//            pstmt.executeUpdate();
+//
+//            ResultSet rs =
+//                    pstmt.getGeneratedKeys();
+//
+//            if (rs.next()) {
+//                deuda.setId(rs.getInt(1));
+//            }
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } finally {
+//            conexion.cerrarConexion();
+//        }
+//    }
+    
+    // posible correccion
     public void registrarDeuda(Deuda deuda) {
+    // Definimos la sentencia SQL completa. 
+    // Asegúrate de que los nombres de las columnas coincidan con tu tabla en Postgres.
+    String sql = "INSERT INTO deuda (id_cliente, id_servicio, monto, descripcion, fecha_registro, estado) VALUES (?, ?, ?, ?, ?::timestamp, ?)";
 
-        String sql = "INSERT INTO deuda "
-                + "(id_cliente, id_servicio, monto, "
-                + "descripcion, fecha_registro, estado) "
-                + "VALUES (?, ?, ?, ?, ?, ?)";
+    Conexion conexion = new Conexion();
 
-        Conexion conexion = new Conexion();
+    try (Connection conn = conexion.conectar();
+         PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-        try (Connection conn = conexion.conectar();
-             PreparedStatement pstmt =
-                     conn.prepareStatement(
-                             sql,
-                             Statement.RETURN_GENERATED_KEYS)) {
+        // 1. Cliente (obligatorio)
+        pstmt.setInt(1, deuda.getCliente().getId());
 
-            pstmt.setInt(1,
-                    deuda.getCliente().getId());
-
-            if (deuda.getServicio() != null) {
-                pstmt.setInt(
-                        2,
-                        deuda.getServicio().getCodigo()
-                );
-            } else {
-                pstmt.setNull(2, Types.INTEGER);
-            }
-
-            pstmt.setDouble(3, deuda.getMonto());
-            pstmt.setString(4,
-                    deuda.getDescripcion());
-            pstmt.setString(5,
-                    deuda.getFechaRegistro());
-            pstmt.setString(6,
-                    deuda.getEstado());
-
-            pstmt.executeUpdate();
-
-            ResultSet rs =
-                    pstmt.getGeneratedKeys();
-
-            if (rs.next()) {
-                deuda.setId(rs.getInt(1));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            conexion.cerrarConexion();
+        // 2. Servicio (puede ser null)
+        if (deuda.getServicio() != null) {
+            pstmt.setInt(2, deuda.getServicio().getCodigo());
+        } else {
+            pstmt.setNull(2, Types.INTEGER);
         }
+
+        // 3. Monto
+        pstmt.setDouble(3, deuda.getMonto());
+        
+        // 4. Descripción
+        pstmt.setString(4, deuda.getDescripcion());
+        
+        // 5. Fecha
+        pstmt.setString(5, deuda.getFechaRegistro());
+        
+        // 6. Estado
+        pstmt.setString(6, deuda.getEstado());
+
+        pstmt.executeUpdate();
+
+        ResultSet rs = pstmt.getGeneratedKeys();
+        if (rs.next()) {
+            deuda.setId(rs.getInt(1));
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        conexion.cerrarConexion();
     }
+}
+    
+    
+    
 
     public ArrayList<Deuda> obtenerDeudas() {
 
