@@ -1,3 +1,4 @@
+//registrar deuda
 package vista;
 
 import controlador.ControladorCliente;
