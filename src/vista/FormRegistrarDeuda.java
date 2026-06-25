@@ -18,10 +18,6 @@ import modelo.Cliente;
 import modelo.Deuda;
 import modelo.Servicio;
 
-//nuevos imports para corregir el error de conversion de la fecha
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 
 

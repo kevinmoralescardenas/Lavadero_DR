@@ -1,3 +1,4 @@
+//FormLogin
 package vista;
 
 import controlador.ControladorAutenticacion;
@@ -11,8 +12,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import modelo.Usuario;
 
-public class FormLogin extends JFrame
-        implements ActionListener {
+public class FormLogin extends JFrame implements ActionListener {
 
     private JLabel lblUsuario;
     private JLabel lblPassword;
@@ -22,10 +22,14 @@ public class FormLogin extends JFrame
 
     private JButton btnIngresar;
     private JButton btnSalir;
+    
+    // 1. Se declara el nuevo atributo para el botón
+    private JButton btnRegistrar;
 
     public FormLogin() {
         setTitle("Sistema Lavadero DR - Login");
-        setSize(400, 250);
+        // 2. Se ajusta la altura de la ventana a 300 para acomodar el nuevo botón
+        setSize(400, 300);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
@@ -62,6 +66,12 @@ public class FormLogin extends JFrame
         btnSalir.setBounds(210, 150, 110, 30);
         btnSalir.addActionListener(this);
         add(btnSalir);
+
+        // 3. Se inicializa y posiciona el botón de registro debajo de los anteriores
+        btnRegistrar = new JButton("Registrar Usuario");
+        btnRegistrar.setBounds(120, 200, 150, 30);
+        btnRegistrar.addActionListener(this);
+        add(btnRegistrar);
     }
 
     @Override
@@ -69,39 +79,27 @@ public class FormLogin extends JFrame
 
         if (e.getSource() == btnIngresar) {
 
-            String usuario =
-                    txtUsuario.getText().trim();
+            String usuario = txtUsuario.getText().trim();
+            String password = String.valueOf(txtPassword.getPassword());
 
-            String password =
-                    String.valueOf(
-                            txtPassword.getPassword());
-
-            ControladorAutenticacion controlador =
-                    new ControladorAutenticacion();
-
-            Usuario u =
-                    controlador.autenticar(
-                            usuario,
-                            password);
+            ControladorAutenticacion controlador = new ControladorAutenticacion();
+            Usuario u = controlador.autenticar(usuario, password);
 
             if (u != null) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Bienvenido "
-                        + u.getNombre());
-
+                JOptionPane.showMessageDialog(this, "Bienvenido " + u.getNombre());
                 dispose();
 
-                FormPrincipal principal =
-                        new FormPrincipal();
-
+                FormPrincipal principal = new FormPrincipal();
                 principal.setVisible(true);
 
             } else {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Usuario o contraseña incorrectos.");
+                JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.");
             }
+        }
+        
+        // 4. Se agrega la lógica para abrir el formulario de registro al hacer clic
+        if (e.getSource() == btnRegistrar) {
+            new FormRegistrarUsuario().setVisible(true);
         }
 
         if (e.getSource() == btnSalir) {
